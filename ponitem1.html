@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PONITEM Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-blue-100 p-4 font-sans">
+
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-4">
+   <button id="menuToggle" class="text-gray-700 hover:text-blue-500 focus:outline-none">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+</button>
+<script>
+  document.getElementById("menuToggle").addEventListener("click", () => {
+    document.getElementById("sidebar").classList.toggle("hidden");
+  });
+</script>
+<div id="sidebar" class="hidden fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-50 p-4">
+  <h2 class="text-xl font-bold mb-4">Menu</h2>
+  <ul class="space-y-2">
+    <li><a href="#" class="block text-gray-700 hover:text-blue-500">Dashboard</a></li>
+    <li><a href="#" class="block text-gray-700 hover:text-blue-500">Settings</a></li>
+    <li><a href="#" class="block text-gray-700 hover:text-blue-500">Logout</a></li>
+  </ul>
+</div>
+
+    <img src="e:\Black and White Modern Minimalist Streetwear Logo.png" alt="PONITEM Logo" class="h-10 mx-auto">
+    <button class="text-2xl">&#128100;</button>
+  </div>
+
+  <!-- Info Cards -->
+  <div class="grid grid-cols-2 gap-4 mb-6">
+    <div class="bg-white p-4 rounded-xl shadow text-center">
+      <div class="text-gray-500">Clorite</div>
+      <div class="text-2xl font-bold">30 <span class="text-sm">ppm</span></div>
+      <div id="cloriteStatus" class="text-sm font-semibold"></div>
+     <script>
+  const cloriteValue = 10; // misalnya dari sensor
+  let cloriteStatus = '';
+  let cloriteClass = '';
+
+  if (cloriteValue < 10) {
+    cloriteStatus = 'Low';
+    cloriteClass = 'text-yellow-500';
+  } else if (cloriteValue <= 20) {
+    cloriteStatus = 'Normal';
+    cloriteClass = 'text-green-500';
+  } else {
+    cloriteStatus = 'High';
+    cloriteClass = 'text-red-500';
+  }
+
+  const statusEl = document.getElementById('cloriteStatus');
+  statusEl.textContent = cloriteStatus;
+  statusEl.className = `text-sm font-semibold ${cloriteClass}`;
+</script>
+
+    </div>
+    <div class="bg-white p-4 rounded-xl shadow text-center">
+      <div class="text-gray-500">Temperature</div>
+      <div class="text-2xl font-bold">26<span class="text-sm">&deg;C</span></div>
+       <div id="temperatureStatus" class="text-sm font-semibold"></div>
+    </div>
+    <script> const temperatureValue = 10; // misalnya dari sensor
+  let temperatureStatus = '';
+  let temperatureClass = '';
+   if (temperatureValue < 0) {
+    temperatureStatus = 'Low';
+    temperatureClass = 'text-yellow-500';
+  } else if (temperatureValue <= 30) {
+    temperatureStatus = 'Normal';
+    temperatureClass = 'text-green-500';
+  } else {
+    temperatureStatus = 'High';
+    temperatureClass = 'text-red-500';
+  } const statusEl = document.getElementById('temperatureStatus');
+  statusEl.textContent = temperatureStatus;
+  statusEl.className = `text-sm font-semibold ${temperatureClass}`;
+  </script>
+   
+    <div class="bg-white p-4 rounded-xl shadow text-center">
+      <div class="text-gray-500">pH</div>
+      <div class="text-2xl font-bold">7.2</div>
+      <div id="phStatus" class="text-sm font-semibold"></div>
+    </div>
+    <script> const phValue = 4; 
+  let phStatus = '';
+  let phClass = '';
+   if (phValue < 5) {
+    phStatus = 'Asam';
+    phClass = 'text-yellow-500';
+  } else if (phValue <= 7) {
+    phStatus = 'Normal';
+    phClass = 'text-green-500';
+  } else {
+    phStatus = 'Basa';
+    phClass = 'text-red-500';
+  } const statusE2 = document.getElementById('phStatus');
+  statusE2.textContent = phStatus;
+  statusE2.className = `text-sm font-semibold ${phClass}`;
+  </script>
+   
+    <div class="bg-white p-4 rounded-xl shadow text-center">
+      <div class="text-gray-500">Device Online</div>
+      <div class="text-2xl font-bold">3</div>
+    </div>
+  </div>
+
+  <!-- Chart pH -->
+  <div class="bg-white p-4 rounded-xl shadow mb-4">
+    <h3 class="text-lg font-semibold mb-2">pH</h3>
+    <canvas id="phChart"></canvas>
+  </div>
+
+  <!-- Chart Temperature -->
+  <div class="bg-white p-4 rounded-xl shadow mb-4">
+    <canvas id="tempChart"></canvas>
+  </div>
+
+  <!-- Gauge Chlorite -->
+  <div class="bg-white p-4 rounded-xl shadow">
+    <h3 class="text-lg font-semibold mb-2">Clorite</h3>
+    <canvas id="cloriteGauge"></canvas>
+    <div class="text-center text-2xl font-bold mt-2">68%</div>
+  </div>
+
+  <script>
+    // pH Chart
+    new Chart(document.getElementById('phChart'), {
+      type: 'line',
+      data: {
+        labels: ['06.00', '06.30', '07.00', '07.30', '08.00'],
+        datasets: [{
+          label: 'pH',
+          data: [2, 5, 4, 3, 6],
+          borderColor: '#3b82f6',
+          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        scales: { y: { beginAtZero: true, max: 8 } },
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    // Temperature Chart
+    new Chart(document.getElementById('tempChart'), {
+      type: 'bar',
+      data: {
+        labels: ['06.00', '06.30', '07.00', '07.30'],
+        datasets: [{
+          label: 'Temperature',
+          data: [25, 26, 26, 28],
+          backgroundColor: '#06b6d4'
+        }]
+      },
+      options: {
+        scales: { y: { beginAtZero: true } },
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    // Clorite Gauge (Simulasi pakai doughnut)
+    new Chart(document.getElementById('cloriteGauge'), {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: [68, 32],
+          backgroundColor: ['#16a34a', '#facc15'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        cutout: '80%',
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
